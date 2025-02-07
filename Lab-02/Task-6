@@ -1,0 +1,40 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+struct Student {
+    char name[50];
+    int rollNumber;
+    int marks[3];
+    float avg;
+};
+
+int main() {
+    int n;
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    Student* students = new Student[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter name for student " << i + 1 << ": ";
+        cin >> students[i].name;
+        cout << "Enter roll number for student " << i + 1 << ": ";
+        cin >> students[i].rollNumber;
+        cout << "Enter marks for 3 subjects: ";
+        for (int j = 0; j < 3; j++) {
+            cin >> students[i].marks[j];
+        }
+        students[i].avg = (students[i].marks[0] + students[i].marks[1] + students[i].marks[2]) / 3.0;
+    }
+
+    cout << "\nStudent Records:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Name: " << students[i].name << ", Roll Number: " << students[i].rollNumber
+             << ", Average Marks: " << students[i].avg << endl;
+    }
+
+    delete[] students;
+    return 0;
+}
