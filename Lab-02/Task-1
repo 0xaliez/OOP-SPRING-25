@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Book {
+    string title;
+    string author;
+    int year;
+};
+
+int main() {
+    int n;
+    cout << "How many books? ";
+    cin >> n;
+
+    Book* books = new Book[n];
+
+    for (int i = 0; i < n; i++) {
+        cin.ignore();
+        cout << "Enter title: ";
+        getline(cin, books[i].title);
+
+        cout << "Enter author: ";
+        getline(cin, books[i].author);
+
+        cout << "Enter year: ";
+        cin >> books[i].year;
+    }
+
+    int y;
+    cout << "Enter year to filter: ";
+    cin >> y;
+
+    cout << "Books published after " << y << ":\n";
+    for (int i = 0; i < n; i++) {
+        if (books[i].year > y) {
+            cout << books[i].title << " by " << books[i].author << " (" << books[i].year << ")\n";
+        }
+    }
+
+    delete[] books;
+    return 0;
+}
