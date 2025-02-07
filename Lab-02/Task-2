@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+int** createMatrix(int r, int c) {
+    int** mat = new int*[r];
+    for (int i = 0; i < r; i++) {
+        mat[i] = new int[c];
+    }
+    return mat;
+}
+
+void inputMatrix(int** mat, int r, int c) {
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            cin >> mat[i][j];
+        }
+    }
+}
+
+void printSum(int** a, int** b, int r, int c) {
+    cout << "Sum of matrices:\n";
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            cout << a[i][j] + b[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void printDifference(int** a, int** b, int r, int c) {
+    cout << "Difference of matrices:\n";
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            cout << a[i][j] - b[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void deleteMatrix(int** mat, int r) {
+    for (int i = 0; i < r; i++) {
+        delete[] mat[i];
+    }
+    delete[] mat;
+}
+
+int main() {
+    int r, c;
+    cout << "Enter rows and columns: ";
+    cin >> r >> c;
+
+    int** mat1 = createMatrix(r, c);
+    int** mat2 = createMatrix(r, c);
+
+    cout << "Enter first matrix:\n";
+    inputMatrix(mat1, r, c);
+
+    cout << "Enter second matrix:\n";
+    inputMatrix(mat2, r, c);
+
+    printSum(mat1, mat2, r, c);
+    printDifference(mat1, mat2, r, c);
+
+    deleteMatrix(mat1, r);
+    deleteMatrix(mat2, r);
+
+    return 0;
+}
