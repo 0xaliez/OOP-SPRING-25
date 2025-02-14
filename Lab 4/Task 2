@@ -1,0 +1,89 @@
+#include "iostream"
+using namespace std;
+
+class Car{
+	private:
+		string brand;
+		string model;
+		float rentalPrice;
+		bool availabilityStatus;
+		
+		
+	public:
+		Car(){
+			brand = "Unknown";
+			model = "Generic";
+			rentalPrice = 0.0;
+			availabilityStatus = true;
+		}
+		
+		void displayCarDetails(){
+			cout<<"Brand: "<<brand<<endl;
+			cout<<"Model: "<<model<<endl;
+			cout<<"Rental Price: "<<rentalPrice<<endl;
+			if(availabilityStatus == true){
+				cout<<"Availability Status: Available"<<brand<<endl;	
+			} else {
+				cout<<"Availability Status: Available"<<brand<<endl;
+			}
+		}
+		
+		void setDetails(string brand, string model, float rentalPrice){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+		}
+		
+		void rent(){
+			if(availabilityStatus == true){
+				cout<<"The car has been rented successfully"<<endl;
+				availabilityStatus = false;
+			} else {
+				cout<<"The car is already rented and unavailable"<<endl;
+			}
+		}
+		
+		void applyDiscount(int days){
+			if(days>=5 && days<10){
+				float total = rentalPrice - (rentalPrice*0.05);
+				cout<<"5% discount applied!: "<<total;
+				
+			} else if(days>=10){
+				float total = rentalPrice - (rentalPrice*0.1);
+				cout<<"10% discount applied!: "<<total;
+			}
+		}
+};
+
+int main(){
+	Car c1; 
+	
+	while(1){
+		int choice,rP,days;
+		string brand,model;
+		
+		cout<<"1. Update Car\n2. Rent A Car\n3. Exit\n Choose an option: "<<endl;
+		cin>>choice;
+		
+		switch(choice){
+			
+			case 1:
+				cout<<"Enter Car Brand: "<<endl;
+				cin>>brand;
+				cout<<"Enter Car Model: "<<endl;
+				cin>>model;
+				cout<<"Enter Car Rental Price: "<<endl;
+				cin>>rP;
+				c1.setDetails(brand, model, rP);
+			break;
+			
+			case 2:
+				cout<<"Enter the amount of days to rent for: ";
+				cin>>days;
+				c1.applyDiscount(days);
+				c1.rent();
+			break;
+			
+		}
+	}
+}
