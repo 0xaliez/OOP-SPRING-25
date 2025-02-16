@@ -1,0 +1,95 @@
+#include <iostream>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    float fuelCapacity;
+    float currentFuelLevel;
+
+public:
+    Car(string b, string m, float capacity, float initialFuel) {
+        brand = b;
+        model = m;
+        fuelCapacity = capacity;
+        currentFuelLevel = initialFuel;
+    }
+
+    void drive(float distance) {
+        float fuelConsumed = distance * 0.1;
+        if (fuelConsumed <= currentFuelLevel) {
+            currentFuelLevel -= fuelConsumed;
+            cout << "You drove " << distance << " km. Fuel consumed: " << fuelConsumed << " liters." << endl;
+            checkFuelStatus();
+        } else {
+            cout << "Not enough fuel, Refuel!" << endl;
+        }
+    }
+
+    void refuel(float amount) {
+        if (amount + currentFuelLevel <= fuelCapacity) {
+            currentFuelLevel += amount;
+            cout << "Refueled " << amount << " liters. Current fuel level: " << currentFuelLevel << " liters." << endl;
+        } else {
+            cout << "Cannot refuel beyond tank capacity." << endl;
+        }
+    }
+
+    void checkFuelStatus() {
+        cout << "Current fuel level: " << currentFuelLevel << " liters." << endl;
+        if (currentFuelLevel < fuelCapacity * 0.1) {
+            cout << "Warning: Fuel level is low!" << endl;
+        }
+    }
+};
+
+int main() {
+    string brand, model;
+    float capacity, initialFuel, distance, amount;
+
+    cout << "Enter car brand: ";
+    cin >> brand;
+    cout << "Enter car model: ";
+    cin >> model;
+    cout << "Enter fuel capacity (liters): ";
+    cin >> capacity;
+    cout << "Enter initial fuel level (liters): ";
+    cin >> initialFuel;
+
+    Car car(brand, model, capacity, initialFuel);
+
+    while(1){
+    	int choice;
+        cout << "\n1. Drive\n2. Refuel\n3. Check Fuel Status\n4. Exit\nEnter your choice: ";
+        cin >> choice;
+
+		switch(choice){
+			case 1:
+				cout << "Enter distance to drive (km): ";
+            	cin >> distance;
+            	car.drive(distance);
+            	system("pause");
+            	system("cls");
+            break;
+			
+			case 2:
+				cout << "Enter amount of fuel to add (liters): ";
+            	cin >> amount;
+            	car.refuel(amount);
+            	system("pause");
+            	system("cls");
+            break;
+            
+            case 3:
+            	car.checkFuelStatus();
+            	system("pause");
+            	system("cls");
+            break;
+			
+			case 4:
+				return 0;
+			break;            
+    };
+
+}
