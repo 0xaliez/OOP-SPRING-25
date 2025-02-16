@@ -1,0 +1,82 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class FitnessTracker {
+	
+private:
+    string userName;
+    int dailyStepGoal;
+    int stepsTaken;
+    int caloriesBurned;
+
+public:
+    FitnessTracker(string name, int stepGoal) {
+        userName = name;
+        dailyStepGoal = stepGoal;
+        stepsTaken = 0;
+        caloriesBurned = 0;
+    }
+
+    void logSteps(int steps) {
+        if (steps > 0) {
+            stepsTaken += steps;
+            caloriesBurned += steps / 20;
+            cout << steps << " steps logged." << endl;
+        } else {
+            cout << "Invalid count." << endl;
+        }
+    }
+
+    void displayProgress() {
+        cout << "Fitness Progress for " << userName << ":" << endl;
+        cout << "Steps Taken: " << stepsTaken << endl;
+        cout << "Calories Burned: " << caloriesBurned << endl;
+        if (stepsTaken >= dailyStepGoal) {
+            cout << "Goal met! Great job!" << endl;
+        } else {
+            cout << "You need " << (dailyStepGoal - stepsTaken) << " more steps to reach your goal." << endl;
+        }
+    }
+};
+
+int main() {
+    string name;
+    int goal;
+    cout << "Enter your name: ";
+    cin >> name;
+    cout << "Enter your daily step goal: ";
+    cin >> goal;
+
+    FitnessTracker tracker(name, goal);
+
+    
+    while(1) {
+    	int choice;
+        cout << "\n1. Log Steps\n2. Show Progress\n3. Exit\nEnter your choice: ";
+        cin >> choice;
+        
+        switch(choice){
+        	case 1:
+        		int steps;
+            	cout << "Enter steps to log: ";
+            	cin >> steps;
+            	tracker.logSteps(steps);
+            	system("pause");
+            	system("cls");
+            break;
+            
+            case 2:
+            	tracker.displayProgress();
+            	system("pause");
+            	system("cls");
+            break;
+            
+            case 3:
+            	cout << "Goodbye!" << endl;
+            	return 0;
+            break;
+		}
+    };
+    return 0;
+}
