@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Wallet {
+    string ownerName;
+    double balance;
+    int* transactions;
+    int transCount;
+    int transSize;
+
+public:
+    Wallet(string name, double initialBalance) {
+        ownerName = name;
+        balance = initialBalance;
+        transCount = 0;
+        transSize = 10;
+        transactions = new int[transSize];
+    }
+
+    void addMoney(int amount) {
+        if (amount > 0) {
+            balance += amount;
+            recordTransaction(amount);
+            cout << "Added " << amount << " to wallet. New balance: " << balance << endl;
+        } else {
+            cout << "Invalid amount." << endl;
+        }
+    }
+
+    void spendMoney(int amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            recordTransaction(-amount);
+            cout << "Spent " << amount << ". Remaining balance: " << balance << endl;
+        } else {
+            cout << "Invalid transaction. Check amount or balance." << endl;
+        }
+    }
+
+    void recordTransaction(int detail) {
+        if (transCount == transSize) {
+            transSize *= 2;
+            int* newTrans = new int[transSize];
+            for (int i = 0; i < transCount; i++) {
+                newTrans[i] = transactions[i];
+            }
+            delete[] transactions;
+            transactions = newTrans;
+        }
+        transactions[transCount++] = detail;
+    }
+
+    void showHistory() {
+        cout << "Transaction History for " << ownerName << ":" << endl;
+        for (int i = 0; i < transCount; i++) {
+            cout << transactions[i] << endl;
+        }
+        cout << "Current balance: " << balance << endl;
+    }
+
+    ~Wallet() {
+        delete[] transactions;
+    }
+};
+
+int main() {
+    string name;
+    int initialAmount;
+    cout << "Enter owner's name: ";
+    cin >> name;
+    cout << "Enter initial wallet balance: ";
+    cin >> initialAmount;
+
+    Wallet myWallet(name, initialAmount);
+    
+	while(1){
+		int choice,amt;
+		cout << "\n1. Add Money\n2. Spend Money\n3. Show History\n4. Exit\nEnter your choice: ";
+        cin >> choice;
+		switch(choice){
+		 	case 1:
+            	cout << "Enter amount to add: ";
+           		cin >> amt;
+            	myWallet.addMoney(amt);
+            	system("pause");
+            	system("cls");
+            break;
+            
+            case 2:
+            	cout << "Enter amount to spend: ";
+            	cin >> amt;
+            	myWallet.spendMoney(amt);
+            	system("pause");
+            	system("cls");
+			break;
+			
+			case 3:
+				myWallet.showHistory();
+				system("pause");
+				system("cls");
+			break;
+			
+			case 4:
+				cout << "Goodbye!" << endl;
+				return 0;
+			break;
+		}		
+	}
+
+    return 0;
+}
