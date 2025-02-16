@@ -1,0 +1,105 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Library {
+    string books[100];
+    bool available[100];
+    int bookCount;
+
+public:
+    Library() {
+        bookCount = 0;
+    }
+
+    void addBook(string bookName) {
+        if (bookCount < 100) {
+            books[bookCount] = bookName;
+            available[bookCount] = true;
+            bookCount++;
+            cout << "Book added successfully." << endl;
+        } else {
+            cout << "Library is full." << endl;
+        }
+    }
+
+    void lendBook() {
+        if (bookCount == 0) {
+            cout << "No books available to lend." << endl;
+            return;
+        }
+
+        cout << "Available Books:" << endl;
+        for (int i = 0; i < bookCount; i++) {
+            if (available[i]) {
+                cout << i + 1 << ". " << books[i] << endl;
+            }
+        }
+
+        int choice;
+        cout << "Enter the number of the book you want to lend: ";
+        cin >> choice;
+
+        if (choice >= 1 && choice <= bookCount && available[choice - 1]) {
+            available[choice - 1] = false;
+            cout << "Book '" << books[choice - 1] << "' has been lent out." << endl;
+        } else {
+            cout << "Invalid choice or book not available." << endl;
+        }
+    }
+
+    void returnBook(string bookName) {
+        for (int i = 0; i < bookCount; i++) {
+            if (books[i] == bookName && !available[i]) {
+                available[i] = true;
+                cout << "Book '" << bookName << "' has been returned." << endl;
+                return;
+            }
+        }
+        cout << "Book not found or already available." << endl;
+    }
+};
+
+int main() {
+    Library lib;
+    
+
+    while(1){
+    	int choice;
+    	string bookName;
+    	
+        cout << "\n1. Add Book\n2. Lend Book\n3. Return Book\n4. Exit\nEnter your choice: ";
+        cin >> choice;
+        
+        switch(choice){
+        	case 1:
+        		cout << "Enter book name: ";
+            	cin.ignore();
+            	getline(cin, bookName);
+            	lib.addBook(bookName);
+            	system("pause");
+            	system("cls");
+			break;
+			
+			case 2:
+				lib.lendBook();
+				system("pause");
+            	system("cls");
+			break;
+			
+			case 3:
+				cout << "Enter book name to return: ";
+            	cin.ignore();
+            	getline(cin, bookName);
+            	lib.returnBook(bookName);
+            	system("pause");
+            	system("cls");
+			break;
+			
+			case 4:
+				return 0;
+			break;
+		}
+    };
+
+}
