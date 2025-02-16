@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MusicPlayer {
+    string playlist[100];
+    int songCount;
+    int currentlyPlaying;
+
+public:
+    MusicPlayer() {
+        songCount = 0;
+        currentlyPlaying = -1;
+    }
+
+    void addSong(string song) {
+        if (songCount < 100) {
+            playlist[songCount++] = song;
+            cout << "Song added: " << song << endl;
+        } else {
+            cout << "Playlist is full!" << endl;
+        }
+    }
+
+    void removeSong(int index) {
+        if (index >= 0 && index < songCount) {
+            cout << "Removing song: " << playlist[index] << endl;
+            for (int i = index; i < songCount - 1; i++) {
+                playlist[i] = playlist[i + 1];
+            }
+            songCount--;
+            if (currentlyPlaying == index) {
+                currentlyPlaying = -1;
+            } else if (currentlyPlaying > index) {
+                currentlyPlaying--;
+            }
+        } else {
+            cout << "Invalid song index." << endl;
+        }
+    }
+
+    void playSong(int index) {
+        if (index >= 0 && index < songCount) {
+            currentlyPlaying = index;
+            cout << "Now playing: " << playlist[currentlyPlaying] << endl;
+        } else {
+            cout << "Invalid song index." << endl;
+        }
+    }
+
+    void displayPlaylist() {
+        if (songCount == 0) {
+            cout << "Playlist is empty." << endl;
+        } else {
+            cout << "Playlist:" << endl;
+            for (int i = 0; i < songCount; i++) {
+                cout << i + 1 << ". " << playlist[i];
+                if (i == currentlyPlaying) {
+                    cout << "  <-- Currently Playing";
+                }
+                cout << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    MusicPlayer player;
+   
+
+    while (true) {
+    	 int choice, index;
+    string song;
+        cout << "\n1. Add Song\n2. Remove Song\n3. Play Song\n4. Display Playlist\n5. Exit\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter song name: ";
+                cin.ignore();
+                cin >> song;
+                player.addSong(song);
+            	system("pause");
+            	system("cls");
+			break;
+            
+			case 2:
+                player.displayPlaylist();
+                cout << "Enter song number to remove: ";
+                cin >> index;
+                player.removeSong(index - 1);
+            	system("pause");
+            	system("cls");
+			break;
+			
+            case 3:
+                player.displayPlaylist();
+                cout << "Enter song number to play: ";
+                cin >> index;
+                player.playSong(index - 1);
+            	system("pause");
+            	system("cls");
+			break;
+			
+            case 4:
+                player.displayPlaylist();
+            	system("pause");
+            	system("cls");
+			break;
+			
+            case 5:
+                return 0;
+    		break;
+        }
+    }
+}
