@@ -1,0 +1,82 @@
+#include "iostream"
+using namespace std;
+
+class Car{
+	private:
+		string brand;
+		string model;
+		float rentalPrice;
+		bool availabilityStatus;
+		
+		
+	public:
+		Car (){
+			brand = "Unknown";
+			model = "Generic";
+			rentalPrice = 0.0;
+			availabilityStatus = true;
+		}
+		Car (string brand, string model, float rentalPrice, bool availabilityStatus){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+			this->availabilityStatus = availabilityStatus;
+		}
+		Car (Car &obj){
+			brand = obj.brand;
+			model = obj.model;
+			rentalPrice = obj.rentalPrice;
+			availabilityStatus = obj.availabilityStatus;
+		}
+		void displayCarDetails(){
+			cout<<"Brand: "<<brand<<endl;
+			cout<<"Model: "<<model<<endl;
+			cout<<"Rental Price: "<<rentalPrice<<endl;
+			if(availabilityStatus == true){
+				cout<<"Availability Status: Available"<<endl;	
+			} else {
+				cout<<"Availability Status: Available"<<endl;
+			}
+		}
+		
+		void setDetails(string brand, string model, float rentalPrice){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+		}
+		
+		void rent(){
+			if(availabilityStatus == true){
+				cout<<"The car has been rented successfully for: $"<<rentalPrice<<endl;
+				availabilityStatus = false;
+			} else {
+				cout<<"The car is already rented and unavailable"<<endl;
+			}
+		}
+		
+		void applyDiscount(int days){
+			if(days>=5 && days<10){
+				float total = rentalPrice - (rentalPrice*0.05);
+				cout<<"5% discount applied!"<<endl;
+				
+			} else if(days>=10){
+				float total = rentalPrice - (rentalPrice*0.1);
+				cout<<"10% discount applied!"<<endl;
+			}
+		}
+		
+		~Car (){
+			cout<<"Car removed from memory"<<endl;
+		}
+};
+
+int main(){
+	Car c1("Toyota", "Corolla", 2500, true); 
+	
+	Car c2(c1);
+	
+	c2.setDetails("Honda", "City", 2100);
+	
+	c1.displayCarDetails();
+	c2.displayCarDetails();
+}
