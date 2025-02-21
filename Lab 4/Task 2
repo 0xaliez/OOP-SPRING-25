@@ -16,7 +16,7 @@ class Car{
 			rentalPrice = 0.0;
 			availabilityStatus = true;
 		}
-		
+
 		void displayCarDetails(){
 			cout<<"Brand: "<<brand<<endl;
 			cout<<"Model: "<<model<<endl;
@@ -36,7 +36,7 @@ class Car{
 		
 		void rent(){
 			if(availabilityStatus == true){
-				cout<<"The car has been rented successfully"<<endl;
+				cout<<"The car has been rented successfully for: $"<<rentalPrice<<endl;
 				availabilityStatus = false;
 			} else {
 				cout<<"The car is already rented and unavailable"<<endl;
@@ -46,11 +46,11 @@ class Car{
 		void applyDiscount(int days){
 			if(days>=5 && days<10){
 				float total = rentalPrice - (rentalPrice*0.05);
-				cout<<"5% discount applied!: "<<total;
+				cout<<"5% discount applied!"<<endl;
 				
 			} else if(days>=10){
 				float total = rentalPrice - (rentalPrice*0.1);
-				cout<<"10% discount applied!: "<<total;
+				cout<<"10% discount applied!"<<endl;
 			}
 		}
 };
@@ -75,6 +75,8 @@ int main(){
 				cout<<"Enter Car Rental Price: "<<endl;
 				cin>>rP;
 				c1.setDetails(brand, model, rP);
+				system("pause");
+				system("cls");
 			break;
 			
 			case 2:
@@ -82,8 +84,13 @@ int main(){
 				cin>>days;
 				c1.applyDiscount(days);
 				c1.rent();
+				system("pause");
+				system("cls");
 			break;
 			
+			case 3:
+				return 0;
+			break;
 		}
 	}
 }
