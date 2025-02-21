@@ -1,0 +1,75 @@
+#include "iostream"
+using namespace std;
+
+class Car{
+	private:
+		int carID;
+		string brand;
+		string model;
+		float rentalPrice;
+		bool availabilityStatus;
+		float revenue;
+		
+	public:
+		Car() : carID(0), brand("Unknown"), model("Generic"), rentalPrice(0.0), availabilityStatus(true), revenue(0.0) {}
+
+        Car(int id, string brand, string model, float rentalPrice, bool availabilityStatus = true)
+            : carID(id), brand(brand), model(model), rentalPrice(rentalPrice), availabilityStatus(availabilityStatus), revenue(0.0) {}
+
+        Car(Car &obj)
+            : carID(obj.carID), brand(obj.brand), model(obj.model), rentalPrice(obj.rentalPrice), availabilityStatus(obj.availabilityStatus), revenue(obj.revenue) {}
+            
+		void displayCarDetails(){
+			cout<<"Car ID: "<<carID<<endl;
+			cout<<"Brand: "<<brand<<endl;
+			cout<<"Model: "<<model<<endl;
+			cout<<"Rental Price: "<<rentalPrice<<endl;
+			cout<<"Total Revenue: "<<revenue<<endl;
+			if(availabilityStatus == true){
+				cout<<"Availability Status: Available"<<endl;	
+			} else {
+				cout<<"Availability Status: Available"<<endl;
+			}
+		}
+		
+		void setDetails(string brand, string model, float rentalPrice){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+		}
+		
+		void rent(){
+			if(availabilityStatus == true){
+				cout<<"The car has been rented successfully for: $"<<rentalPrice<<endl;
+				availabilityStatus = false;
+			} else {
+				cout<<"The car is already rented and unavailable"<<endl;
+			}
+		}
+		
+		void revenueCalculator(int days){
+			this->revenue = this->revenue + (days*rentalPrice);
+			cout<<"Total revenue from this car: $"<<revenue<<endl;
+		}
+		
+		void applyDiscount(int days){
+			if(days>=5 && days<10){
+				float total = rentalPrice - (rentalPrice*0.05);
+				cout<<"5% discount applied!"<<endl;
+			} else if(days>=10){
+				float total = rentalPrice - (rentalPrice*0.1);
+				cout<<"10% discount applied!"<<endl;
+			}
+		}
+		
+		~Car (){
+			cout<<"Car removed from memory";
+		}
+};
+
+int main(){
+	Car c1(101, "Toyota", "Corolla", 2500, true); 
+	
+	c1.displayCarDetails();
+	
+}
