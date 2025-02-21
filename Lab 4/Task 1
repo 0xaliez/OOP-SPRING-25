@@ -10,13 +10,19 @@ class Car{
 		
 		
 	public:
-		Car(){
+		Car (){
 			brand = "Unknown";
 			model = "Generic";
 			rentalPrice = 0.0;
 			availabilityStatus = true;
 		}
-		
+		Car(string brand, string model, float rentalPrice, bool availabilityStatus){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+			this->availabilityStatus = availabilityStatus;
+		}
+	
 		void displayCarDetails(){
 			cout<<"Brand: "<<brand<<endl;
 			cout<<"Model: "<<model<<endl;
@@ -36,20 +42,32 @@ class Car{
 		
 		void rent(){
 			if(availabilityStatus == true){
-				cout<<"The car has been rented successfully"<<endl;
+				cout<<"The car has been rented successfully for: $"<<rentalPrice<<endl;
 				availabilityStatus = false;
 			} else {
 				cout<<"The car is already rented and unavailable"<<endl;
 			}
 		}
-
+		
+		void applyDiscount(int days){
+			if(days>=5 && days<10){
+				float total = rentalPrice - (rentalPrice*0.05);
+				cout<<"5% discount applied!"<<endl;
+				
+			} else if(days>=10){
+				float total = rentalPrice - (rentalPrice*0.1);
+				cout<<"10% discount applied!"<<endl;
+			}
+		}
+		
+		
 };
 
 int main(){
-	Car c1; 
+	Car c1("Toyota", "Corolla", 2500.00, true); 
 	
 	while(1){
-		int choice,rP;
+		int choice,rP,days;
 		string brand,model;
 		
 		cout<<"1. Update Car\n2. Rent A Car\n3. Exit\n Choose an option: "<<endl;
@@ -65,16 +83,22 @@ int main(){
 				cout<<"Enter Car Rental Price: "<<endl;
 				cin>>rP;
 				c1.setDetails(brand, model, rP);
+				system("pause");
+				system("cls");
 			break;
 			
 			case 2:
+				cout<<"Enter the amount of days to rent for: ";
+				cin>>days;
+				c1.applyDiscount(days);
 				c1.rent();
+				system("pause");
+				system("cls");
 			break;
 			
 			case 3:
 				return 0;
 			break;
-			
 		}
 	}
 }
