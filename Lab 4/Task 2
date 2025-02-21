@@ -10,13 +10,19 @@ class Car{
 		
 		
 	public:
-		Car(){
+		Car (){
 			brand = "Unknown";
 			model = "Generic";
 			rentalPrice = 0.0;
 			availabilityStatus = true;
 		}
-
+		Car(string brand, string model, float rentalPrice, bool availabilityStatus){
+			this->brand = brand;
+			this->model = model;
+			this->rentalPrice = rentalPrice;
+			this->availabilityStatus = availabilityStatus;
+		}
+	
 		void displayCarDetails(){
 			cout<<"Brand: "<<brand<<endl;
 			cout<<"Model: "<<model<<endl;
@@ -53,10 +59,12 @@ class Car{
 				cout<<"10% discount applied!"<<endl;
 			}
 		}
+		
+		
 };
 
 int main(){
-	Car c1; 
+	Car c1("Toyota", "Corolla", 2500.00, true); 
 	
 	while(1){
 		int choice,rP,days;
