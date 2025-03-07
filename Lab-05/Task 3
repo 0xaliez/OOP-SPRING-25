@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Project;
+
+class Employee {
+private:
+    string name;
+    string designation;
+    Project** projects;
+    int projectCount;
+
+public:
+    Employee(string name, string designation) : name(name), designation(designation), projects(nullptr), projectCount(0) {}
+
+    ~Employee() {
+        delete[] projects;
+    }
+
+    void addProject(Project* project);
+    void displayProjs() const;
+
+    string getName() const {
+        return name;
+    }
+
+    string getDesignation() const {
+        return designation;
+    }
+};
+
+class Project {
+private:
+    string title;
+    string deadline;
+    Employee** employees;
+    int employeeCount;
+
+public:
+    Project(string title, string deadline) : title(title), deadline(deadline), employees(nullptr), employeeCount(0) {}
+
+    ~Project() {
+        delete[] employees;
+    }
+
+    void addEmp(Employee* employee);
+    void displayDetails() const;
+
+    string getTitle() const {
+        return title;
+    }
+};
+
+void Employee::addProject(Project* project) {
+    Project** newProjects = new Project*[projectCount + 1];
+    for (int i = 0; i < projectCount; i++) {
+        newProjects[i] = projects[i];
+    }
+    newProjects[projectCount] = project;
+    delete[] projects;
+    projects = newProjects;
+    projectCount++;
+}
+
+void Employee::displayProjs() const {
+    cout << "Employee: " << name << " (" << designation << ")" << endl;
+    cout << "Assigned Projects:" << endl;
+    for (int i = 0; i < projectCount; i++) {
+        cout << " - " << projects[i]->getTitle() << endl;
+    }
+    cout << "-------------------------" << endl;
+}
+
+void Project::addEmp(Employee* employee) {
+    Employee** newEmployees = new Employee*[employeeCount + 1];
+    for (int i = 0; i < employeeCount; i++) {
+        newEmployees[i] = employees[i];
+    }
+    newEmployees[employeeCount] = employee;
+    delete[] employees;
+    employees = newEmployees;
+    employeeCount++;
+    employee->addProject(this);
+}
+
+void Project::displayDetails() const {
+    cout << "Project Title: " << title << endl;
+    cout << "Deadline: " << deadline << endl;
+    cout << "Assigned Employees:" << endl;
+    for (int i = 0; i < employeeCount; i++) {
+        cout << " - " << employees[i]->getName() << " (" << employees[i]->getDesignation() << ")" << endl;
+    }
+    cout << "-------------------------" << endl;
+}
+
+int main() {
+    Employee emp1("Ali", "Software Engineer");
+    Employee emp2("Hasheem", "Project Manager");
+    Employee emp3("Mustufa", "DevOps Engineer");
+
+    Project proj1("Website Redesign", "07-03-2025");
+    Project proj2("Mobile App Development", "08-03-2025");
+
+    proj1.addEmp(&emp1);
+    proj1.addEmp(&emp2);
+    proj2.addEmp(&emp1);
+    proj2.addEmp(&emp3);
+
+    cout << "Project Details:" << endl;
+    proj1.displayDetails();
+    proj2.displayDetails();
+
+    cout << "Employee Assignments:" << endl;
+    emp1.displayProjs();
+    emp2.displayProjs();
+    emp3.displayProjs();
+
+    return 0;
+}
