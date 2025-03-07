@@ -1,0 +1,66 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Apartment {
+private:
+    int id;
+    char* address;
+    char* ownerName;
+
+public:
+    Apartment(int id, const char* address, const char* ownerName) {
+        this->id = id;
+        this->address = new char[strlen(address) + 1];
+        strcpy(this->address, address);
+        this->ownerName = new char[strlen(ownerName) + 1];
+        strcpy(this->ownerName, ownerName);
+    }
+
+    Apartment(const Apartment& other) {
+        this->id = other.id;
+        this->address = new char[strlen(other.address) + 1];
+        strcpy(this->address, other.address);
+        this->ownerName = other.ownerName;
+    }
+
+    ~Apartment() {
+        delete[] address;
+    }
+
+    void display() const {
+        cout << "Apartment ID: " << id << endl;
+        cout << "Address: " << address << endl;
+        cout << "Owner's Name: " << ownerName << endl;
+        cout << "-------------------------" << endl;
+    }
+
+    void updateOwnerName(const char* newOwnerName) {
+        delete[] ownerName;
+        ownerName = new char[strlen(newOwnerName) + 1];
+        strcpy(ownerName, newOwnerName);
+    }
+};
+
+int main() {
+    Apartment apt1(23, "MA Jinnah Rd", "Ali");
+
+    cout << "Original apartment:" << endl;
+    apt1.display();
+
+    Apartment apt2 = apt1;
+
+    cout << "Copied apartment (Transferred to New Agent):" << endl;
+    apt2.display();
+
+    apt2.updateOwnerName("Hasheem");
+
+    cout << "After Updating Owner's Name:" << endl;
+    cout << "Original apartment:" << endl;
+    apt1.display();
+    cout << "Copied apartment:" << endl;
+    apt2.display();
+
+    return 0;
+}
