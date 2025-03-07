@@ -1,0 +1,93 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Doctor {
+private:
+    string name;
+    string specialization;
+    int experience;
+
+public:
+    Doctor(string name, string specialization, int experience)
+        : name(name), specialization(specialization), experience(experience) {}
+
+    void display() const {
+        cout << "Doctor Name: " << name << endl;
+        cout << "Specialization: " << specialization << endl;
+        cout << "Experience: " << experience << " years" << endl;
+        cout << "-------------------------" << endl;
+    }
+
+    string getName() const {
+        return name;
+    }
+};
+
+class Hospital {
+private:
+    string hospitalName;
+    Doctor** doctors;
+    int doctorCount;
+
+public:
+    Hospital(string name) : hospitalName(name), doctors(NULL), doctorCount(0) {}
+
+    ~Hospital() {
+        delete[] doctors;
+    }
+
+    void addDoctor(Doctor* doctor) {
+        Doctor** newDoctors = new Doctor*[doctorCount + 1];
+        for (int i = 0; i < doctorCount; i++) {
+            newDoctors[i] = doctors[i];
+        }
+        newDoctors[doctorCount] = doctor;
+        delete[] doctors;
+        doctors = newDoctors;
+        doctorCount++;
+    }
+
+    void removeDoctor(const string& doctorName) {
+        for (int i = 0; i < doctorCount; i++) {
+            if (doctors[i]->getName() == doctorName) {
+                for (int j = i; j < doctorCount - 1; j++) {
+                    doctors[j] = doctors[j + 1];
+                }
+                doctorCount--;
+                cout << "Doctor " << doctorName << " removed from " << hospitalName << endl;
+                return;
+            }
+        }
+        cout << "Doctor " << doctorName << " not found in " << hospitalName << endl;
+    }
+
+    void display() const {
+        cout << "Hospital Name: " << hospitalName << endl;
+        cout << "Doctors Working Here:" << endl;
+        for (int i = 0; i < doctorCount; i++) {
+            doctors[i]->display();
+        }
+        cout << "-------------------------" << endl;
+    }
+};
+
+int main() {
+    Doctor doc1("Dr. Ali", "Cardiology", 10);
+    Doctor doc2("Dr. Hasheem", "Neurology", 8);
+    Doctor doc3("Dr. Mustufa", "Pediatrics", 5);
+
+    Hospital hospital("Jinnah Hospital");
+
+    hospital.addDoctor(&doc1);
+    hospital.addDoctor(&doc2);
+    hospital.display();
+
+    hospital.addDoctor(&doc3);
+    hospital.display();
+
+    hospital.removeDoctor("Dr. Ali");
+    hospital.display();
+
+    return 0;
+}
