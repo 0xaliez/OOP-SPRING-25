@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Student {
+private:
+    int id;
+    char* name;
+    int* examScores;
+    int numScores;
+
+public:
+    Student(int id, const char* name, const int* scores, int numScores) {
+        this->id = id;
+
+        this->name = new char[strlen(name) + 1];
+        strcpy(this->name, name);
+
+        this->numScores = numScores;
+        this->examScores = new int[numScores];
+        for (int i = 0; i < numScores; i++) {
+            this->examScores[i] = scores[i];
+        }
+    }
+
+    Student(const Student& obj) {
+        this->id = obj.id;
+
+        this->name = new char[strlen(obj.name) + 1];
+        strcpy(this->name, obj.name);
+
+        this->numScores = obj.numScores;
+        this->examScores = new int[obj.numScores];
+        for (int i = 0; i < obj.numScores; i++) {
+            this->examScores[i] = obj.examScores[i];
+        }
+    }
+
+    ~Student() {
+        delete[] name;
+        delete[] examScores;
+    }
+
+    void display() const {
+        cout << "Student ID: " << id << endl;
+        cout << "Name: " << name << endl;
+        cout << "Exam Scores: ";
+        for (int i = 0; i < numScores; i++) {
+            cout << examScores[i] << " ";
+        }
+        cout << endl;
+        cout << "-------------------------" << endl;
+    }
+
+    void updateScore(int index, int newScore) {
+        if (index >= 0 && index < numScores) {
+            examScores[index] = newScore;
+        }
+    }
+};
+
+int main() {
+    int scores1[] = {85, 90, 78};
+    Student student1(780, "Ali", scores1, 3);
+
+    cout << "Original Studen:" << endl;
+    student1.display();
+
+    Student student2 = student1;
+
+    cout << "Copied Student :" << endl;
+    student2.display();
+
+    student2.updateScore(1, 95);
+
+    cout << "After Updating:" << endl;
+    cout << "Original Student:" << endl;
+    student1.display();
+    cout << "Copied Student:" << endl;
+    student2.display();
+
+    return 0;
+}
