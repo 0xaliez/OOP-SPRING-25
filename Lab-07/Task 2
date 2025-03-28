@@ -1,0 +1,141 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Product {
+protected:
+    int productID;
+    string productName;
+    double price;
+    int stockQuantity;
+
+public:
+    Product(int id, string name, double p, int stock = 0) 
+        : productID(id), productName(name), price(p), stockQuantity(stock) {}
+
+    virtual double applyDiscount() {
+        return price;
+    }
+
+    virtual double calculateTotalPrice(int quantity) {
+        return price * quantity;
+    }
+
+    virtual void displayProductInfo() const {
+        cout << "Product: " << productName 
+             << " | ID: " << productID 
+             << " | Price: $" << price 
+             << " | Stock: " << stockQuantity << endl;
+    }
+
+    double getPrice() const {
+        return price;
+    }
+
+    double operator+(const Product& other) const {
+        return this->price + other.price;
+    }
+
+    friend ostream& operator<<(ostream& os, const Product& p) {
+        os << "Product: " << p.productName << " | Price: $" << p.price;
+        return os;
+    }
+};
+
+class Electronics : public Product {
+    int warrantyPeriod;
+    string brand;
+
+public:
+    Electronics(int id, string name, double p, int stock, int warranty, string b)
+        : Product(id, name, p, stock), warrantyPeriod(warranty), brand(b) {}
+
+    void displayProductInfo() const override {
+        Product::displayProductInfo();
+        cout << "Brand: " << brand 
+             << " | Warranty: " << warrantyPeriod << " months" << endl;
+    }
+};
+
+class Clothing : public Product {
+    string size, color, fabricMaterial;
+
+public:
+    Clothing(int id, string name, double p, int stock, string s, string c, string fabric)
+        : Product(id, name, p, stock), size(s), color(c), fabricMaterial(fabric) {}
+
+    double applyDiscount() override {
+        return price * 0.9;
+    }
+
+    void displayProductInfo() const override {
+        Product::displayProductInfo();
+        cout << "Size: " << size 
+             << " | Color: " << color 
+             << " | Material: " << fabricMaterial << endl;
+    }
+};
+
+class FoodItem : public Product {
+    string expirationDate;
+    int calories;
+
+public:
+    FoodItem(int id, string name, double p, int stock, string expiry, int cal)
+        : Product(id, name, p, stock), expirationDate(expiry), calories(cal) {}
+
+    double calculateTotalPrice(int quantity) override {
+        if (quantity >= 5) 
+            return price * quantity * 0.85;
+        return price * quantity;
+    }
+
+    void displayProductInfo() const override {
+        Product::displayProductInfo();
+        cout << "Expires: " << expirationDate 
+             << " | Calories: " << calories << " kcal" << endl;
+    }
+};
+
+class Book : public Product {
+    string author, genre;
+
+public:
+    Book(int id, string name, double p, int stock, string a, string g)
+        : Product(id, name, p, stock), author(a), genre(g) {}
+
+    void displayProductInfo() const override {
+        Product::displayProductInfo();
+        cout << "Author: " << author 
+             << " | Genre: " << genre << endl;
+    }
+};
+
+int main() {
+    Electronics laptop(101, "Laptop", 999.99, 10, 24, "Dell");
+    Clothing tShirt(102, "T-Shirt", 19.99, 50, "M", "Red", "Cotton");
+    FoodItem apple(103, "Apple", 1.50, 100, "2025-04-10", 95);
+    Book novel(104, "C++ for Beginners", 29.99, 20, "John Doe", "Programming");
+
+    cout << "=== Product Listings ===" << endl << endl;
+
+    laptop.displayProductInfo();
+    cout << endl;
+    tShirt.displayProductInfo();
+    cout << endl;
+    apple.displayProductInfo();
+    cout << endl;
+    novel.displayProductInfo();
+    cout << endl;
+
+    cout << "Applying Discounts:" << endl;
+    cout << "T-Shirt discounted price: $" << tShirt.applyDiscount() << endl;
+    cout << "Total price for 6 Apples: $" << apple.calculateTotalPrice(6) << endl << endl;
+
+    cout << "Overloaded Operators:" << endl;
+    cout << "Total price of Laptop + Book: $" << laptop + novel << endl;
+    cout << "Product info via <<: " << tShirt << endl;
+
+    return 0;
+}
