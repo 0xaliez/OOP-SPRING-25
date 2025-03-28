@@ -1,0 +1,139 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Person {
+protected:
+    string name;
+    int age;
+    string contactNumber;
+    string address;
+
+public:
+    Person(string n, int a, string contact, string addr = "") 
+        : name(n), age(a), contactNumber(contact), address(addr) {}
+
+    virtual void displayInfo() const {
+        cout << "Name: " << name 
+             << " | Age: " << age 
+             << " | Contact: " << contactNumber;
+        if (address != "")
+            cout << " | Address: " << address;
+        cout << endl;
+    }
+
+    virtual void updateInfo(string newContact, string newAddress = "") {
+        contactNumber = newContact;
+        if (newAddress != "") address = newAddress;
+    }
+};
+
+class Patient : public Person {
+    int patientID;
+    string medicalHistory;
+    string doctorAssigned;
+
+public:
+    Patient(string n, int a, string contact, int id, string history, string doctor, string addr = "")
+        : Person(n, a, contact, addr), patientID(id), medicalHistory(history), doctorAssigned(doctor) {}
+
+    void displayInfo() const override {
+        Person::displayInfo();
+        cout << "Patient ID: " << patientID 
+             << " | Medical History: " << medicalHistory 
+             << " | Assigned Doctor: " << doctorAssigned << endl;
+    }
+};
+
+class Doctor : public Person {
+    string specialization;
+    double consultationFee;
+    string patientsList[5]; 
+    int patientCount;
+
+public:
+    Doctor(string n, int a, string contact, string spec, double fee, string addr = "")
+        : Person(n, a, contact, addr), specialization(spec), consultationFee(fee), patientCount(0) {}
+
+    void addPatient(string patientName) {
+        patientsList[patientCount++] = patientName;
+    }
+
+    void displayInfo() const override {
+        Person::displayInfo();
+        cout << "Specialization: " << specialization 
+             << " | Consultation Fee: $" << consultationFee << endl;
+        if (patientCount > 0) {
+            cout << "Patients List: ";
+            for (int i = 0; i < patientCount; i++) {
+                cout << patientsList[i];
+                if (i < patientCount - 1) cout << ", ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+class Nurse : public Person {
+    string assignedWard;
+    string shiftTimings;
+
+public:
+    Nurse(string n, int a, string contact, string ward, string shift, string addr = "")
+        : Person(n, a, contact, addr), assignedWard(ward), shiftTimings(shift) {}
+
+    void displayInfo() const override {
+        Person::displayInfo();
+        cout << "Assigned Ward: " << assignedWard 
+             << " | Shift: " << shiftTimings << endl;
+    }
+};
+
+class Administrator : public Person {
+    string department;
+    double salary;
+
+public:
+    Administrator(string n, int a, string contact, string dept, double sal, string addr = "")
+        : Person(n, a, contact, addr), department(dept), salary(sal) {}
+
+    void updateInfo(string newContact, double newSalary, string newAddress = "") {
+        Person::updateInfo(newContact, newAddress);
+        salary = newSalary;
+    }
+
+    void displayInfo() const override {
+        Person::displayInfo();
+        cout << "Department: " << department 
+             << " | Salary: $" << salary << endl;
+    }
+};
+
+int main() {
+    Patient p1("John Doe", 45, "555-1234", 101, "Diabetes, Hypertension", "Dr. Smith", "123 Main St");
+    Doctor d1("Dr. Smith", 50, "555-5678", "Cardiology", 150.00, "Hospital Ave");
+    Nurse n1("Alice Brown", 30, "555-4321", "ICU", "Night Shift");
+    Administrator admin("Mark Wilson", 40, "555-9876", "HR", 60000.00);
+
+    d1.addPatient("John Doe");
+
+    cout << "=== Hospital Staff & Patient Records ===\n\n";
+    
+    p1.displayInfo();
+    cout << endl;
+    
+    d1.displayInfo();
+    cout << endl;
+    
+    n1.displayInfo();
+    cout << endl;
+    
+    admin.displayInfo();
+    cout << endl;
+
+    admin.updateInfo("555-9999", 65000.00, "New Office Block");
+    admin.displayInfo();
+
+    return 0;
+}
