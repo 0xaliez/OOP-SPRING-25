@@ -1,0 +1,155 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Device {
+protected:
+    int deviceID;
+    string deviceName;
+    bool status;
+    string location;
+
+public:
+    Device(int id, string name, string loc = "Unknown") : deviceID(id), deviceName(name), status(false), location(loc) {}
+
+    void turnOn() {
+        status = true;
+        cout << deviceName << " turned ON\n";
+    }
+
+    void turnOff() {
+        status = false;
+        cout << deviceName << " turned OFF\n";
+    }
+
+    void displayInfo() const {
+        cout << deviceName << " (ID: " << deviceID << "), Status: " << (status ? "ON" : "OFF") << ", Location: " << location << "\n";
+    }
+};
+
+class Light : public Device {
+    int brightnessLevel;
+    string colorMode;
+
+public:
+    Light(int id, string loc, int brightness = 50, string color = "White")
+        : Device(id, "Light", loc), brightnessLevel(brightness), colorMode(color) {}
+
+    void setBrightness(int level) {
+        brightnessLevel = level;
+        cout << "Brightness: " << brightnessLevel << "%\n";
+    }
+
+    void changeColor(string mode) {
+        colorMode = mode;
+        cout << "Color changed to " << colorMode << "\n";
+    }
+
+    void displayInfo() const {
+        Device::displayInfo();
+        cout << "Brightness: " << brightnessLevel << "%, Color Mode: " << colorMode << "\n";
+    }
+};
+
+class Thermostat : public Device {
+    double temperature;
+    string mode;
+
+public:
+    Thermostat(int id, string loc, double temp = 22.0, string m = "Cooling")
+        : Device(id, "Thermostat", loc), temperature(temp), mode(m) {}
+
+    void setTemperature(double temp) {
+        temperature = temp;
+        cout << "Temp set to " << temperature << "C\n";
+    }
+
+    void setMode(string m) {
+        mode = m;
+        cout << "Mode: " << mode << "\n";
+    }
+
+    void displayInfo() const {
+        Device::displayInfo();
+        cout << "Current Temp: " << temperature << "C, Mode: " << mode << "\n";
+    }
+};
+
+class SecurityCamera : public Device {
+    string resolution;
+    bool nightVisionEnabled;
+
+public:
+    SecurityCamera(int id, string loc, string res = "1080p", bool nightVision = true)
+        : Device(id, "Security Camera", loc), resolution(res), nightVisionEnabled(nightVision) {}
+
+    void turnOn() {
+        status = true;
+        cout << "Camera ON and recording\n";
+    }
+
+    void turnOff() {
+        status = false;
+        cout << "Camera OFF, recording stopped\n";
+    }
+
+    void displayInfo() const {
+        Device::displayInfo();
+        cout << "Resolution: " << resolution << ", Night Vision: " << (nightVisionEnabled ? "Yes" : "No") << "\n";
+    }
+};
+
+class SmartPlug : public Device {
+    double powerConsumption;
+    int timerSetting;
+
+public:
+    SmartPlug(int id, string loc, double power = 0.0, int timer = 0)
+        : Device(id, "Smart Plug", loc), powerConsumption(power), timerSetting(timer) {}
+
+    void setTimer(int minutes) {
+        timerSetting = minutes;
+        cout << "Timer set for " << timerSetting << " min\n";
+    }
+
+    void displayInfo() const {
+        Device::displayInfo();
+        cout << "Power: " << powerConsumption << "W, Timer: " << timerSetting << " min\n";
+    }
+
+    void turnOff() {
+        Device::turnOff();
+        cout << "Power usage logged\n";
+    }
+};
+
+int main() {
+    Light myLight(101, "Living Room", 75, "Warm White");
+    Thermostat myThermostat(102, "Bedroom", 24.0, "Heating");
+    SecurityCamera myCamera(103, "Front Door", "4K", true);
+    SmartPlug myPlug(104, "Kitchen", 150.0, 30);
+
+    cout << "=== Smart Home System ===\n\n";
+
+    myLight.turnOn();
+    myLight.displayInfo();
+    cout << "\n";
+
+    myThermostat.setTemperature(22.5);
+    myThermostat.displayInfo();
+    cout << "\n";
+
+    myCamera.turnOn();
+    myCamera.displayInfo();
+    cout << "\n";
+
+    myPlug.turnOn();
+    myPlug.setTimer(45);
+    myPlug.displayInfo();
+    cout << "\n";
+
+    myPlug.turnOff();
+    cout << "\n";
+
+    return 0;
+}
