@@ -1,0 +1,93 @@
+#include <iostream>
+
+using namespace std;
+
+class MatrixHelper;
+
+class Matrix2x2 {
+private:
+    int m[2][2];
+
+public:
+    Matrix2x2(int a = 0, int b = 0, int c = 0, int d = 0) {
+        m[0][0] = a; m[0][1] = b;
+        m[1][0] = c; m[1][1] = d;
+    }
+
+    Matrix2x2 operator+(const Matrix2x2& other) const {
+        return Matrix2x2(
+            m[0][0] + other.m[0][0], m[0][1] + other.m[0][1],
+            m[1][0] + other.m[1][0], m[1][1] + other.m[1][1]
+        );
+    }
+
+    Matrix2x2 operator-(const Matrix2x2& other) const {
+        return Matrix2x2(
+            m[0][0] - other.m[0][0], m[0][1] - other.m[0][1],
+            m[1][0] - other.m[1][0], m[1][1] - other.m[1][1]
+        );
+    }
+
+    Matrix2x2 operator*(const Matrix2x2& other) const {
+        return Matrix2x2(
+            m[0][0] * other.m[0][0] + m[0][1] * other.m[1][0],
+            m[0][0] * other.m[0][1] + m[0][1] * other.m[1][1],
+            m[1][0] * other.m[0][0] + m[1][1] * other.m[1][0],
+            m[1][0] * other.m[0][1] + m[1][1] * other.m[1][1]
+        );
+    }
+
+    friend int determinant(const Matrix2x2& mat);
+
+    friend class MatrixHelper;
+
+    friend ostream& operator<<(ostream& os, const Matrix2x2& mat);
+};
+
+class MatrixHelper {
+public:
+    void updateElement(Matrix2x2& mat, int row, int col, int value) {
+        if (row >= 0 && row < 2 && col >= 0 && col < 2) {
+            mat.m[row][col] = value;
+        } else {
+            cout << "Invalid index!" << endl;
+        }
+    }
+};
+
+ostream& operator<<(ostream& os, const Matrix2x2& mat) {
+    os << mat.m[0][0] << " " << mat.m[0][1] << endl;
+    os << mat.m[1][0] << " " << mat.m[1][1];
+    return os;
+}
+int determinant(const Matrix2x2& mat) {
+        return mat.m[0][0] * mat.m[1][1] - mat.m[0][1] * mat.m[1][0];
+}
+
+int main() {
+    Matrix2x2 A(1, 2, 3, 4);
+    Matrix2x2 B(5, 6, 7, 8);
+	MatrixHelper m;
+	
+    Matrix2x2 sum = A + B;
+    Matrix2x2 diff = A - B;
+    Matrix2x2 prod = A * B;
+
+    cout << "Matrix A:" << endl;
+    cout << A << endl;
+    cout << "Matrix B:" << endl;
+    cout << B << endl;
+    cout << "Sum:" << endl;
+    cout << sum << endl;
+    cout << "Difference:" << endl;
+    cout << diff << endl;
+    cout << "Product:" << endl;
+    cout << prod << endl;
+    cout << "Determinant of A: " << determinant(A) << endl;
+
+    m.updateElement(A, 1, 1, 9);
+    cout << "Updated Matrix A:" << endl;
+    cout << A << endl;
+
+    return 0;
+}
