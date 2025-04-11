@@ -1,0 +1,56 @@
+#include <iostream>
+
+using namespace std;
+
+class InventoryManager;
+
+class Car{
+	string model;
+	double price;
+	
+	public:
+		Car(string model, double price = 0): model(model), price(price){}
+		
+		friend class InventoryManager;
+		
+		friend void comparePrice(const Car& c1, const Car& c2);
+};
+
+class InventoryManager{
+	
+	public:	
+		void updatePrice(Car& c, double amount){
+			double old;
+			old = c.price;
+			c.price = amount;
+			cout << "Updated " << c.model << " price from " << old << " to " << c.price << endl;
+ 		}
+		
+		void displayDetails(const Car& c){
+			cout << "Model: " << c.model;
+			cout << "Price: " << c.price;
+		}
+		
+};
+
+void comparePrice(const Car& c1, const Car& c2){
+	if(c1.price > c2.price){
+		cout << c1.model << " is more expensive compared to " << c2.model << endl;
+	} else if(c1.price < c2.price){
+		cout << c2.model << " is more expensive compared to " << c1.model << endl;
+	} else {
+		cout << c1.model << " and " << c2.model << " are priced equally." << endl;
+	}
+}
+
+int main() {
+	
+	Car c1("Toyota Corolla", 52000), c2("Honda Civic", 80000);	
+	InventoryManager im;
+	
+	im.updatePrice(c1, 53000);
+	
+	comparePrice(c1, c2);
+	
+	return 0;
+}
