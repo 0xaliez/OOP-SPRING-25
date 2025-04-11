@@ -1,0 +1,68 @@
+#include <iostream>
+
+using namespace std;
+
+class Manager;
+
+class Account {
+	int accNo;
+	float balance;
+	
+	public:
+		Account(int accNo, float balance = 0): accNo(accNo), balance(balance){}
+		
+		friend class Manager;
+		
+		friend void transferFunds(Account& a1, Account& a2, float amount);
+	
+};
+
+class Manager{
+	public:
+		void displayDetails(const Account& a){
+			cout << "Account Number: " << a.accNo << endl;
+			cout << "Balance: "	<< a.balance << endl;
+		}
+		
+		void withdraw(Account& a, float amount){
+			if(a.balance >= amount){
+				a.balance -= amount;
+			}
+			cout << amount << "rs withdrawn from " << a.accNo << endl;
+		}
+		
+		void deposit(Account& a, float amount){
+			a.balance += amount;
+			cout << amount << "rs deposited in " << a.accNo << endl;
+		}
+};
+
+void transferFunds(Account& a1, Account& a2, float amount){
+	
+	if(a1.balance >= amount){
+		a2.balance += amount;
+		a1.balance -= amount;
+	}
+	
+	cout << amount << "rs transferred from " << a1.accNo << " to " << a2.accNo << endl;
+}
+
+int main() {
+	Account a1(1001), a2(1002);
+	Manager m;
+	
+	m.deposit(a1, 45000);
+	m.deposit(a2, 23000);
+	cout << endl;
+	
+	transferFunds(a1, a2, 22000);
+	cout << endl;
+	
+	m.withdraw(a2, 20000);
+	cout << endl;
+	
+	m.displayDetails(a1);
+	m.displayDetails(a2);
+	
+	return 0;
+}
