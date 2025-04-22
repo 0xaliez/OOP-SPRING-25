@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+class Patient {
+protected:
+    string name;
+    string id;
+
+public:
+    Patient(string name, string id) : name(name), id(id) {}
+
+    virtual void displayTreatment() const = 0;
+    virtual double calculateCost() const = 0;
+
+    virtual ~Patient() {}
+};
+
+class InPatient : public Patient {
+public:
+    InPatient(string name, string id) : Patient(name, id) {}
+
+    void displayTreatment() const override {
+        cout << "In-Patient Treatment Plan for " << name << " (ID: " << id << "):" << endl;
+        cout << "- Surgery\n- 5 Days Hospital Stay\n- Medication\n";
+    }
+
+    double calculateCost() const override {
+        return 1500.0 + (5 * 200.0) + 300.0;
+    }
+};
+
+class OutPatient : public Patient {
+public:
+    OutPatient(string name, string id) : Patient(name, id) {}
+
+    void displayTreatment() const override {
+        cout << "Out-Patient Treatment Plan for " << name << " (ID: " << id << "):" << endl;
+        cout << "- Doctor Consultation\n- Lab Tests\n- Medication\n";
+    }
+
+    double calculateCost() const override {
+        return 100.0 + 150.0 + 200.0;
+    }
+};
+
+int main() {
+    Patient* p1 = new InPatient("Hasheem", "0521");
+    Patient* p2 = new OutPatient("Muzamil", "1023");
+
+    p1->displayTreatment();
+    cout << "Estimated Cost: $" << p1->calculateCost() << "\n\n";
+
+    p2->displayTreatment();
+    cout << "Estimated Cost: $" << p2->calculateCost() << "\n\n";
+
+    delete p1;
+    delete p2;
+
+    return 0;
+}
