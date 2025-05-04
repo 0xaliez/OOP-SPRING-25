@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+
+int main() {
+    std::ofstream outFile("config.txt");
+
+    if (!outFile) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return 1;
+    }
+    outFile << "AAAAABBBBBCCCCC";
+    outFile.close();
+
+    std::fstream inOutFile("config.txt", std::ios::in | std::ios::out);
+
+    if (!inOutFile) {
+        std::cerr << "Error opening file for reading and writing." << std::endl;
+        return 1;
+    }
+
+    inOutFile.seekp(5, std::ios::beg);
+
+    inOutFile.write("XXXXX", 5);
+
+    inOutFile.close();
+
+    std::ifstream verifyFile("config.txt");
+
+    if (!verifyFile) {
+        std::cerr << "Error opening file for verification." << std::endl;
+        return 1;
+    }
+
+    std::string content;
+    std::getline(verifyFile, content);
+    std::cout << "Updated content of config.txt: " << content << std::endl;
+
+    return 0;
+}
