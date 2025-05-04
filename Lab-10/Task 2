@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+int main() {
+    std::ifstream inFile("vehicles.txt");
+    if (!inFile) {
+        std::cerr << "Error: Could not open file 'vehicles.txt'." << std::endl;
+        return 1;
+    }
+
+    std::string line;
+    while (std::getline(inFile, line)) {
+        if (line.empty()) continue;
+        if (line.find("//") == 0 || line[0] == '#') continue;
+
+        std::istringstream ss(line);
+        std::string type, id, name, year, extraData, certification;
+
+        std::getline(ss, type, ',');
+        std::getline(ss, id, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, year, ',');
+        std::getline(ss, extraData, ',');
+        std::getline(ss, certification, ',');
+
+        std::cout << "Type: " << type << "\n"
+                  << "ID: " << id << "\n"
+                  << "Name: " << name << "\n"
+                  << "Year: " << year << "\n"
+                  << "ExtraData: " << extraData << "\n"
+                  << "Certification: " << certification << "\n"
+                  << "-----------------------------" << std::endl;
+    }
+
+    inFile.close();
+    return 0;
+}
