@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+
+int main() {
+    std::ifstream inFile("large_log.txt");
+
+    if (!inFile) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return 1;
+    }
+
+    char buffer[11]; 
+
+
+    inFile.read(buffer, 10);
+    buffer[10] = '\0';
+    std::cout << "Read first block: " << buffer << std::endl;
+    std::cout << "Position after first read: " << inFile.tellg() << std::endl;
+
+    inFile.read(buffer, 10);
+    buffer[10] = '\0';
+    std::cout << "Read second block: " << buffer << std::endl;
+    std::cout << "Position after second read: " << inFile.tellg() << std::endl;
+
+    inFile.close();
+
+    return 0;
+}
