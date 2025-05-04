@@ -1,0 +1,23 @@
+#include <iostream>
+#include <fstream>
+
+int main() {
+    std::ofstream outFile("sensor_log.txt");
+
+    if (!outFile) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return 1;
+    }
+
+    outFile << "Sensor 1: 25.5 C\n";
+    std::streampos pos1 = outFile.tellp();
+    std::cout << "Position after writing first line: " << pos1 << std::endl;
+
+    outFile << "Sensor 2: 98.1 %RH\n";
+    std::streampos pos2 = outFile.tellp();
+    std::cout << "Position after writing second line: " << pos2 << std::endl;
+
+    outFile.close();
+
+    return 0;
+}
