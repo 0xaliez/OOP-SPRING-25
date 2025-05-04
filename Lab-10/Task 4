@@ -1,0 +1,58 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+int main() {
+    std::ifstream inFile("vehicles.txt");
+    if (!inFile) {
+        std::cerr << "Error: Could not open file 'vehicles.txt'." << std::endl;
+        return 1;
+    }
+
+    std::string line;
+    while (std::getline(inFile, line)) {
+        if (line.empty()) continue;
+        if (line.find("//") == 0 || line[0] == '#') continue;
+
+        std::istringstream ss(line);
+        std::string type, id, name, yearStr, extraData, certification;
+
+        std::getline(ss, type, ',');
+        std::getline(ss, id, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, yearStr, ',');
+        std::getline(ss, extraData, ',');
+        std::getline(ss, certification, ',');
+
+        int year = std::stoi(yearStr);
+
+        std::cout << "Type: " << type << "\n"
+                  << "ID: " << id << "\n"
+                  << "Name: " << name << "\n"
+                  << "Year: " << year << "\n"
+                  << "ExtraData: " << extraData << "\n"
+                  << "Certification: " << certification << std::endl;
+
+        if (type == "AutonomousCar") {
+            size_t pos = extraData.find(':');
+            if (pos != std::string::npos) {
+                std::string versionStr = extraData.substr(pos + 1);
+                float softwareVersion = std::stof(versionStr);
+                std::cout << "Software Version (float) for ID " << id << ": " << softwareVersion << std::endl;
+            }
+        } else if (type == "ElectricVehicle") {
+            size_t pos = extraData.find(':');
+            if (pos != std::string::npos) {
+                std::string batteryStr = extraData.substr(pos + 1);
+                int batteryCapacity = std::stoi(batteryStr);
+                std::cout << "Battery Capacity (int) for ID " << id << ": " << batteryCapacity << std::endl;
+            }
+        }
+
+        std::cout << "-----------------------------" << std::endl;
+    }
+
+    inFile.close();
+    return 0;
+}
