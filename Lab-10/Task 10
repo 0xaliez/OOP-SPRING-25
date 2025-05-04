@@ -1,0 +1,21 @@
+#include <iostream>
+#include <fstream>
+
+int main() {
+    std::ifstream inFile("data_records.txt");
+
+    if (!inFile) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return 1;
+    }
+
+    inFile.seekg(20, std::ios::beg);
+
+    std::string record;
+    std::getline(inFile, record); 
+    std::cout << "Third record: " << record << std::endl;
+
+    inFile.close();
+
+    return 0;
+}
