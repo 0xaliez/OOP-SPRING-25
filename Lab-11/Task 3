@@ -1,0 +1,24 @@
+#include <iostream>
+#include <exception>
+
+class InvalidTemperatureException : public std::exception {};
+
+template <typename T>
+T convertToFahrenheit(T celsius) {
+    if (celsius < static_cast<T>(-273.15))
+        throw InvalidTemperatureException();
+    return celsius * 9 / 5 + 32;
+}
+
+int main() {
+    try {
+        std::cout << "Attempting to convert -300C ...\n";
+        double fahrenheit = convertToFahrenheit(-300.0);
+        std::cout << "Fahrenheit: " << fahrenheit << "\n";
+    }
+    catch (const InvalidTemperatureException& e) {
+        std::cout << "Caught InvalidTemperatureException - what(): " << e.what() << "\n";
+    }
+
+    return 0;
+}
